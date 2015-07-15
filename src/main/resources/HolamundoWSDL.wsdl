@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://serviciosaxis2.ejemplos.blogs.org"
+	xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://serviciosaxis2.ejemplos.blogs.org"
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+	<wsdl:types>
+		<xs:schema attributeFormDefault="qualified"
+			elementFormDefault="qualified" targetNamespace="http://serviciosaxis2.ejemplos.blogs.org"
+			xmlns:ax24="http://serviciosaxis2.ejemplos.blogs.org/xsd">
+			<xs:element name="holaati">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="persona" nillable="true"
+							type="ns:Persona" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="holaatiResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return" nillable="true"
+							type="ns:PersonaRespuesta" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Persona">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="apellidos" nillable="true"
+						type="xs:string" />
+					<xs:element minOccurs="0" name="nombre" nillable="true"
+						type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="PersonaRespuesta">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="saludo" nillable="true"
+						type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="holaatiResponse">
+		<wsdl:part name="parameters" element="ns:holaatiResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="holaatiRequest">
+		<wsdl:part name="parameters" element="ns:holaati">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="HolamundoPortType">
+		<wsdl:operation name="holaati">
+			<wsdl:input message="ns:holaatiRequest" wsaw:Action="urn:holaati">
+			</wsdl:input>
+			<wsdl:output message="ns:holaatiResponse" wsaw:Action="urn:holaatiResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="HolamundoSoap11Binding" type="ns:HolamundoPortType">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="holaati">
+			<soap:operation soapAction="urn:holaati" style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="HolamundoHttpBinding" type="ns:HolamundoPortType">
+		<http:binding verb="POST" />
+		<wsdl:operation name="holaati">
+			<http:operation location="holaati" />
+			<wsdl:input>
+				<mime:content part="parameters" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="parameters" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="HolamundoSoap12Binding"
+		type="ns:HolamundoPortType">
+
+		<soap12:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="holaati">
+
+			<soap12:operation
+				soapAction="http://serviciosaxis2.ejemplos.blogs.org/holaati" />
+			<wsdl:input>
+
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<wsdl:service name="HolamundoWSDL">
+		<wsdl:port name="HolamundoHttpEndpoint" binding="ns:HolamundoHttpBinding">
+			<http:address location="http://localhost:8080/axis2/services/Holamundo" />
+		</wsdl:port>
+		<wsdl:port name="HolamundoHttpSoap11Endpoint" binding="ns:HolamundoSoap11Binding">
+			<soap:address location="http://localhost:8080/axis2/services/Holamundo" />
+		</wsdl:port>
+		<wsdl:port name="HolamundoHttpSoap12Endpoint" binding="ns:HolamundoSoap12Binding">
+			<soap12:address location="http://localhost:8080/axis2/services/Holamundo" />
+		</wsdl:port>
+		<wsdl:port name="HolamundoHttpsEndpoint" binding="ns:HolamundoHttpBinding">
+			<http:address location="https://www.example.org/" />
+		</wsdl:port>
+		<wsdl:port name="HolamundoHttpsSoap11Endpoint" binding="ns:HolamundoSoap11Binding">
+			<soap:address location="https://www.example.org/" />
+		</wsdl:port>
+		<wsdl:port name="HolamundoHttpsSoap12Endpoint" binding="ns:HolamundoSoap12Binding">
+			<soap12:address location="https://www.example.org/"/>
+    </wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
